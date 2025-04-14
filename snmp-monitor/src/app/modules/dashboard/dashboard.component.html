@@ -1,0 +1,40 @@
+<div class="dashboard-container">
+  <h2>Dashboard</h2>
+  <button mat-raised-button color="primary" (click)="openAddDialog()">Add Dashboard</button>
+  
+  <div class="widgets-grid">
+    <div
+      *ngFor="let widget of widgets"
+      cdkDrag
+      [cdkDragData]="widget"
+      (cdkDragEnded)="dragEnded($event, widget)"
+      class="widget"
+      [style.top.px]="widget.position.y"
+      [style.left.px]="widget.position.x"
+    >
+      <div class="widget-header">
+        <h3>{{ widget.name || widget.device_name }}</h3>
+        <button mat-icon-button (click)="removeWidget(widget.id)">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+      
+      <div class="widget-content">
+        <ng-container *ngIf="widget.type === 'graph'">
+          <canvas baseChart
+            [data]="getChartData(widget)"
+            [options]="chartOptions"
+            [type]="chartType"
+          ></canvas>
+        </ng-container>
+        
+        <ng-container *ngIf="widget.type === 'gauge'">
+          <div class="gauge">
+            <p class="value">{{ getLatestValue(widget) }}</p>
+            <p class="label">{{ widget.oid }}</p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

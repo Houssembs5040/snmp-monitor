@@ -1,0 +1,23 @@
+<div class="widget-content" [ngClass]="widget.type === 'uptime' ? 'uptime' : 'graph'">
+    <div class="header">
+      <h3>{{ widget.name || widget.oid }} ({{ widget.device_name }})</h3>
+      <button class="btn-close" (click)="remove.emit(widget.id)">✖</button>
+    </div>
+    <div class="body">
+      <ng-container *ngIf="widget.type === 'uptime'; else graphTemplate">
+        <div class="uptime-box">
+          <p><strong>Device:</strong> {{ widget.device_ip }}</p>
+          <p><strong>Uptime:</strong> {{ getLatestValue() }}</p>
+        </div>
+      </ng-container>
+      <ng-template #graphTemplate>
+        <div class="graph">
+          <canvas baseChart
+                  [type]="getChartType()"
+                  [data]="getChartData(getChartType())"
+                  [options]="getChartOptions(getChartType())">
+          </canvas>
+        </div>
+      </ng-template>
+    </div>
+  </div>

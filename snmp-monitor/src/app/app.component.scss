@@ -1,0 +1,18 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    background-color: #f3f4f6;
+  }
+  
+  .content-area {
+    transition: all 0.3s ease;
+    min-height: 100vh;
+  
+    &.sidebar-expanded {
+      margin-left: 250px;
+    }
+  
+    &.sidebar-collapsed {
+      margin-left: 70px;
+    }
+  }

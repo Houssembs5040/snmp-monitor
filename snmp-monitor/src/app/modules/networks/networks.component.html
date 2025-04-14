@@ -1,0 +1,62 @@
+<div class="networks">
+  <h2>Networks</h2>
+
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <div class="add-network">
+    <h3>Add New Network</h3>
+    <form (ngSubmit)="addNetwork()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input id="name" [(ngModel)]="newNetwork.name" name="name" placeholder="e.g., Office Network" required>
+      </div>
+      <div class="form-group">
+        <label for="ip_range">IP Range</label>
+        <input id="ip_range" [(ngModel)]="newNetwork.ip_range" name="ip_range" placeholder="e.g., 192.168.1.0/24" required>
+      </div>
+      <div class="form-group">
+        <label for="gateway">Gateway IP</label>
+        <input id="gateway" [(ngModel)]="newNetwork.gateway" name="gateway" placeholder="e.g., 192.168.1.1" required>
+      </div>
+      <br>
+      <button type="submit" class="btn btn-primary">Add Network</button>
+    </form>
+  </div>
+
+  <div class="networks-list" *ngIf="networks.length > 0; else noNetworks">
+    <h3>Network List</h3>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>IP Range</th>
+          <th>Gateway</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let network of networks">
+          <td>
+            <span class="icon" [ngClass]="network.status === 'active' ? 'icon-active' : network.status ? 'icon-inactive' : 'icon-unknown'"></span>
+          </td>
+          <td>{{ network.name }}</td>
+          <td>{{ network.ip_range }}</td>
+          <td>{{ network.gateway }}</td>
+          <td>{{ network.status || 'Unknown' }}</td>
+          <td>
+            <button class="btn btn-primary" (click)="pingNetwork(network.id)">Ping</button>
+            <button class="btn btn-warn" (click)="deleteNetwork(network.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #noNetworks>
+    <div *ngIf="!errorMessage">
+      <p>No networks available.</p>
+    </div>
+  </ng-template>
+</div>

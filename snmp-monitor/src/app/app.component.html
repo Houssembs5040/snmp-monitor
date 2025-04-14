@@ -1,0 +1,6 @@
+<div class="app-container">
+  <app-sidebar></app-sidebar>
+  <div class="content-area" [ngClass]="{'sidebar-expanded': !isSidebarCollapsed, 'sidebar-collapsed': isSidebarCollapsed}">
+    <router-outlet></router-outlet>
+  </div>
+</div>

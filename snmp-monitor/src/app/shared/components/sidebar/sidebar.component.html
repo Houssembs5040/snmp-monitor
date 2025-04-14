@@ -1,0 +1,101 @@
+<div class="sidebar" [ngClass]="{'sidebar-collapsed': collapsed}">
+    <!-- Sidebar Header -->
+    <div class="sidebar-header">
+      <div class="logo-container">
+        <i class="fas fa-network-wired"></i>
+        <h1 class="logo-text">SNMP Monitor</h1>
+      </div>
+    </div>
+  
+    <!-- Sidebar Menu -->
+    <div class="sidebar-menu">
+      <!-- Monitoring Section -->
+      <div class="menu-section">
+        <h2 class="section-title">Monitoring</h2>
+        <ul>
+          <li>
+            <a routerLink="/dashboard" routerLinkActive="active">
+              <i class="fas fa-tachometer-alt"></i>
+              <span class="menu-text">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/snmp-browser" routerLinkActive="active">
+              <i class="fas fa-search"></i>
+              <span class="menu-text">SNMP Browser</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/networks" routerLinkActive="active">
+              <i class="fas fa-server"></i>
+              <span class="menu-text">Networks</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/discovery" routerLinkActive="active">
+              <i class="fas fa-compass"></i>
+              <span class="menu-text">Discovery</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/alerts" routerLinkActive="active">
+              <i class="fas fa-bell"></i>
+              <span class="menu-text">Alerts</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Configuration Section -->
+      <div class="menu-section">
+        <h2 class="section-title">Configuration</h2>
+        <ul>
+          <li>
+            <a routerLink="/templates" routerLinkActive="active">
+              <i class="fas fa-copy"></i>
+              <span class="menu-text">Templates</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/hosts" routerLinkActive="active">
+              <i class="fas fa-desktop"></i>
+              <span class="menu-text">Hosts</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/items" routerLinkActive="active">
+              <i class="fas fa-cube"></i>
+              <span class="menu-text">Items</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+  
+      <!-- Administration Section -->
+      <div class="menu-section">
+        <h2 class="section-title">Administration</h2>
+        <ul>
+          <li>
+            <a routerLink="/users" routerLinkActive="active">
+              <i class="fas fa-users"></i>
+              <span class="menu-text">Users</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/settings" routerLinkActive="active">
+              <i class="fas fa-cog"></i>
+              <span class="menu-text">Settings</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <i [ngClass]="collapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left'"></i>
+        <span class="menu-text">{{ collapsed ? 'Expand' : 'Collapse' }}</span>
+      </button>
+    </div>
+  </div>

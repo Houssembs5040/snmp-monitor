@@ -1,0 +1,43 @@
+<div class="hosts">
+  <h2>Hosts</h2>
+
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="action-message" *ngIf="actionMessage">{{ actionMessage }}</div>
+
+  <div class="hosts-list" *ngIf="hosts.length > 0">
+    <h3>Saved Hosts</h3>
+    <div class="host" *ngFor="let host of hosts">
+      <div class="host-header" (click)="toggleHost(host)">
+        <span class="icon" [ngClass]="host.state === 'online' ? 'icon-online' : host.state === 'offline' ? 'icon-offline' : 'icon-unknown'"></span>
+        <span>{{ host.name || host.ip }}</span>
+        <span class="expand-icon">{{ host.expanded ? '▼' : '▶' }}</span>
+      </div>
+      <div class="host-details" *ngIf="host.expanded">
+        <p><strong>IP Address:</strong> {{ host.ip }}</p>
+        <p><strong>Name:</strong>
+          <span *ngIf="!host.editingName && !host.snmp_available">{{ host.name || 'Unnamed' }}</span>
+          <span *ngIf="host.snmp_available">{{ host.sysName || 'Unknown' }}</span>
+          <ng-container *ngIf="host.editingName && !host.snmp_available">
+            <input [(ngModel)]="host.tempName" placeholder="Enter name" />
+            <button class="btn btn-success" (click)="saveName(host)">Save</button>
+            <button class="btn btn-warn" (click)="cancelEdit(host)">Cancel</button>
+          </ng-container>
+        </p>
+        <p><strong>Network Address: </strong> {{ host.network_ip_range }}</p>
+        <p><strong>Status: </strong> {{ host.state || 'Unknown' }}</p>
+        <p><strong>SNMP Available: </strong> {{ host.snmp_available ? 'Yes' : 'No' }}</p>
+        <p *ngIf="host.snmp_available"><strong>System Description: </strong> {{ host.sysDescr || 'Unknown' }}</p>
+        <p><strong>Open Ports: </strong> {{ host.open_ports.length > 0 ? host.open_ports.join(', ') : 'None' }}</p>
+        <div class="actions">
+          <button class="btn btn-primary" (click)="pingHost(host)">Ping</button>
+          <button class="btn btn-accent" *ngIf="host.snmp_available" (click)="queryHost(host.ip)">Query SNMP</button>
+          <button class="btn btn-edit" *ngIf="!host.snmp_available && !host.editingName" (click)="editName(host)">Edit Name</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="hosts.length === 0 && !errorMessage">
+    <p>No hosts saved yet.</p>
+  </div>
+</div>

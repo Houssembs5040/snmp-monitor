@@ -1,0 +1,97 @@
+<div class="snmp-browser">
+    <h2>SNMP Browser</h2>
+    
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  
+    <div class="add-device">
+      <h3>Add New Device</h3>
+      <form (ngSubmit)="addDevice()">
+        <div class="form-group">
+          <label for="ip-address">IP Address</label>
+          <input id="ip-address" [(ngModel)]="newDevice.ip_address" name="ip_address" placeholder="e.g., 192.168.1.1" required>
+        </div>
+        <div class="form-group">
+          <label for="read-community">Read Community</label>
+          <input id="read-community" [(ngModel)]="newDevice.read_community" name="read_community" placeholder="e.g., public" required>
+        </div>
+        <div class="form-group">
+          <label for="write-community">Write Community</label>
+          <input id="write-community" [(ngModel)]="newDevice.write_community" name="write_community" placeholder="e.g., private" required>
+        </div>
+        <div class="form-group">
+          <label for="oid">OID</label>
+          <input id="oid" [(ngModel)]="newDevice.oid" name="oid" placeholder="e.g., .1.3.6.1.2.1.1.1.0" required>
+        </div>
+        <div class="form-group">
+          <label for="object-name">Object Name</label>
+          <input id="object-name" [(ngModel)]="newDevice.object_name" name="object_name" placeholder="e.g., System Description" required>
+        </div>
+        
+      
+      <button type="submit">Add Device</button>
+      </form>
+      <div class="mib-tree">
+        <h4>Select OID from MIB Tree (Optional)</h4>
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="beautiful-tree">
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding (click)="selectOid(node)">
+            <mat-icon class="node-icon">insert_drive_file</mat-icon>
+            <span class="node-text"> {{node.name}} {{node.oid ? '(' + node.oid + ')' : ''}}</span>
+          </mat-tree-node>
+          <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+              <mat-icon class="mat-icon-rtl-mirror toggle-icon">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            <mat-icon class="node-icon">
+              {{treeControl.isExpanded(node) ? 'folder_open' : 'folder'}}
+            </mat-icon>
+            <span class="node-text">{{node.name}}</span>
+          </mat-tree-node>
+        </mat-tree>
+      </div>
+  
+    </div>
+  
+    <div class="devices-list">
+      <h3>Devices</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>IP Address</th>
+            <th>Read Community</th>
+            <th>Write Community</th>
+            <th>OID</th>
+            <th>Object Name</th>
+            <th>Value</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let device of devices">
+            <td>{{ device.ip_address }}</td>
+            <td>{{ device.read_community }}</td>
+            <td>{{ device.write_community }}</td>
+            <td>{{ device.oid }}</td>
+            <td>{{ device.object_name }}</td>
+            <td>{{ device.value || 'Not queried' }}</td>
+            <td>
+              <button class="action-btn get-btn" (click)="getRequest(device.id)">Get</button>
+              <button class="action-btn next-btn" (click)="getNextRequest(device.id)">Next</button>
+              <button class="action-btn bulk-btn" (click)="getBulkRequest(device.id)">Bulk</button>
+              <button class="action-btn walk-btn" (click)="walkRequest(device.id)">Walk</button>
+              <div class="set-action">
+                <input type="text" [(ngModel)]="setValues[device.id]" name="setValue-{{device.id}}" placeholder="Set value" class="set-input">
+                <select [(ngModel)]="setTypes[device.id]" name="setType-{{device.id}}" class="set-type">
+                  <option value="string">String</option>
+                  <option value="integer">Integer</option>
+                </select>
+                <button class="action-btn set-btn" (click)="setRequest(device.id)">Set</button>
+              </div>
+              <button class="action-btn delete-btn" (click)="deleteDevice(device.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

@@ -1,0 +1,211 @@
+.snmp-browser {
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0px 1px 3px rgba(0,0,0,0.1);
+  
+    .error {
+      color: red;
+      margin-bottom: 1rem;
+    }
+  
+    h2 {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+  
+    .add-device {
+      margin-bottom: 2rem;
+  
+      h3 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+      }
+  
+      .form-group {
+        margin-bottom: 1rem;
+  
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+          color: #333;
+        }
+  
+        input {
+          width: 100%;
+          padding: 0.5rem;
+          border: 1px solid #ccc;
+          border-radius: 0.25rem;
+          font-size: 0.9rem;
+        }
+      }
+  
+      button {
+        padding: 0.5rem 1rem;
+        margin-right: 10px;
+        background-color: #004996;
+        color: white;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+  
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
+  
+      .mib-tree {
+        margin-top: 1rem;
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid #e0e0e0;
+        border-radius: 0.25rem;
+        padding: 0.5rem;
+        background-color: #fafafa;
+  
+        h4 {
+          font-size: 0.9rem;
+          margin-bottom: 0.75rem;
+          color: #555;
+          font-weight: 500;
+        }
+  
+        .beautiful-tree {
+          width: 100%;
+          font-size: 0.9rem;
+  
+          mat-tree-node {
+            display: flex;
+            align-items: center;
+            padding: 0.25rem 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+  
+            &:hover {
+              background-color: #f0f0f0;
+            }
+  
+            &.mat-tree-node-expanded {
+              background-color: #e8f0fe;
+            }
+  
+            .node-icon {
+              margin-right: 0.5rem;
+              color: #f4b400; /* Google folder yellow */
+              font-size: 1.1rem;
+              width: 1.1rem;
+              height: 1.1rem;
+  
+              &[ng-reflect-icon="insert_drive_file"] {
+                color: #757575; /* Gray for files */
+              }
+            }
+  
+            .toggle-icon {
+              color: #f7f7f7;
+              font-size: 1.2rem;
+              width: 1.2rem;
+              height: 1.2rem;
+            }
+  
+            .node-text {
+              color: #333;
+              font-family: 'Roboto', sans-serif;
+            }
+          }
+  
+          /* Use SCSS calc for indentation */
+          mat-tree-node {
+            padding-left: calc(1rem * var(--level, 0));
+          }
+        }
+      }
+    }
+  
+    .devices-list {
+      h3 {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+  
+        th, td {
+          padding: 0.5rem;
+          border: 1px solid #ccc;
+          text-align: left;
+        }
+  
+        th {
+          background-color: #f4f4f4;
+          font-weight: 500;
+        }
+  
+        .action-btn {
+          padding: 0.25rem 0.5rem;
+          color: white;
+          border: none;
+          border-radius: 0.25rem;
+          cursor: pointer;
+          margin-right: 0.5rem;
+          margin-bottom: 0.25rem;
+          transition: opacity 0.2s;
+  
+          &:hover {
+            opacity: 0.9;
+          }
+        }
+  
+        .get-btn {
+          background-color: #00346b;
+        }
+  
+        .next-btn {
+          background-color: #00346b;
+        }
+  
+        .bulk-btn {
+          background-color: #00346b;
+        }
+  
+        .walk-btn {
+          background-color: #00346b;
+        }
+  
+        .set-btn {
+          background-color: #00346b;
+        }
+  
+        .delete-btn {
+          background-color: #dc3545;
+        }
+  
+        .set-action {
+          display: flex;
+          align-items: center;
+          margin-bottom: 0.25rem;
+  
+          .set-input {
+            width: 100px;
+            padding: 0.25rem;
+            margin-right: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 0.25rem;
+          }
+  
+          .set-type {
+            padding: 0.25rem;
+            margin-right: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 0.25rem;
+            background-color: white;
+          }
+        }
+      }
+    }
+  }

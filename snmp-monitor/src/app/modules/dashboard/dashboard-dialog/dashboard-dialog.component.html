@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Add New Dashboard</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Device</mat-label>
+    <mat-select [(ngModel)]="form.device_id" required>
+      <mat-option *ngFor="let device of devices" [value]="device.id">
+        {{ device.ip_address }} - {{ device.object_name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>OID</mat-label>
+    <input matInput [(ngModel)]="form.oid" placeholder="e.g., .1.3.6.1.2.1.1.3.0" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Type</mat-label>
+    <mat-select [(ngModel)]="form.type" required>
+      <mat-option value="graph">Graph</mat-option>
+      <mat-option value="gauge">Gauge</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Name (Optional)</mat-label>
+    <input matInput [(ngModel)]="form.name" placeholder="e.g., System Uptime" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!form.device_id || !form.oid || !form.type">Add</button>
+</mat-dialog-actions>

@@ -1,0 +1,44 @@
+<div class="discovery">
+  <h2>Network Discovery</h2>
+
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="ping-message" *ngIf="pingMessage">{{ pingMessage }}</div>
+
+  <div class="network-select">
+    <label for="network">Select Network:</label>
+    <select id="network" [(ngModel)]="selectedNetworkId">
+      <option [ngValue]="null">Choose a network</option>
+      <option *ngFor="let network of networks" [ngValue]="network.id">
+        {{ network.name }} ({{ network.ip_range }})
+      </option>
+    </select>
+    <button class="btn btn-primary" (click)="startScan()" [disabled]="isScanning">Start Scan</button>
+  </div>
+
+  <div class="scan-progress" *ngIf="isScanning">
+    <div class="spinner"></div>
+    <p>Scanning network, please wait...</p>
+  </div>
+
+  <div class="devices-list" *ngIf="devices.length > 0 && !isScanning">
+    <h3>Discovered Devices</h3>
+    <div class="device" *ngFor="let device of devices">
+      <div class="device-header" (click)="toggleDevice(device)">
+        <span class="icon" [ngClass]="device.state === 'online' ? 'icon-online' : 'icon-offline'"></span>
+        <span>{{ device.ip }}</span>
+        <span class="expand-icon">{{ device.expanded ? '▼' : '▶' }}</span>
+      </div>
+      <div class="device-details" *ngIf="device.expanded">
+        <p><strong>State:</strong> {{ device.state }}</p>
+        <p><strong>Open Ports:</strong> {{ device.open_ports.length > 0 ? device.open_ports.join(', ') : 'None' }}</p>
+        <p><strong>SNMP Available:</strong> {{ device.snmp_available ? 'Yes' : 'No' }}</p>
+        <div class="actions">
+          <button class="btn btn-primary" (click)="pingDevice(device.ip)">Ping</button>
+          <button class="btn btn-accent" *ngIf="device.snmp_available" (click)="queryDevice(device.ip)">Query SNMP</button>
+          <button class="btn btn-success" (click)="saveDevice(device)" [disabled]="device.saved" *ngIf="!device.saved">Save</button>
+          <span *ngIf="device.saved" class="saved-label">Saved</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+/* Set global font with fallbacks */
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  line-height: 1.5;
+}
+
+/* Set base font size */
+html {
+  font-size: 16px;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
