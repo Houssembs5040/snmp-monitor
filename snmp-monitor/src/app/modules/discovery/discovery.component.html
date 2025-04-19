@@ -2,7 +2,7 @@
   <h2>Network Discovery</h2>
 
   <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
-  <div class="ping-message" *ngIf="pingMessage">{{ pingMessage }}</div>
+  <div class="status-message" *ngIf="statusMessage">{{ statusMessage }}</div>
 
   <div class="network-select">
     <label for="network">Select Network:</label>
@@ -12,31 +12,67 @@
         {{ network.name }} ({{ network.ip_range }})
       </option>
     </select>
-    <button class="btn btn-primary" (click)="startScan()" [disabled]="isScanning">Start Scan</button>
+    <button class="btn btn-primary" (click)="startScan()" [disabled]="isScanning">
+      {{ isScanning ? 'Scanning...' : 'Find Devices' }}
+    </button>
   </div>
 
   <div class="scan-progress" *ngIf="isScanning">
     <div class="spinner"></div>
-    <p>Scanning network, please wait...</p>
+    <p>{{ statusMessage }}</p>
   </div>
 
-  <div class="devices-list" *ngIf="devices.length > 0 && !isScanning">
-    <h3>Discovered Devices</h3>
+  <div class="devices-list" *ngIf="devices.length > 0">
+    <h3>Discovered Devices ({{ devices.length }})</h3>
     <div class="device" *ngFor="let device of devices">
       <div class="device-header" (click)="toggleDevice(device)">
         <span class="icon" [ngClass]="device.state === 'online' ? 'icon-online' : 'icon-offline'"></span>
         <span>{{ device.ip }}</span>
         <span class="expand-icon">{{ device.expanded ? '▼' : '▶' }}</span>
       </div>
+      
       <div class="device-details" *ngIf="device.expanded">
-        <p><strong>State:</strong> {{ device.state }}</p>
-        <p><strong>Open Ports:</strong> {{ device.open_ports.length > 0 ? device.open_ports.join(', ') : 'None' }}</p>
-        <p><strong>SNMP Available:</strong> {{ device.snmp_available ? 'Yes' : 'No' }}</p>
+        <p><strong>Status:</strong> {{ device.state | uppercase }}</p>
+        
+        <button class="btn btn-accent" 
+                (click)="performDetailedScan(device)"
+                [disabled]="device.basic_scan_done">
+          {{ device.basic_scan_done ? 'Scan Complete' : 'Run Detailed Scan' }}
+        </button>
+        
+        <div class="scan-results" *ngIf="device.detailed_scan">
+          <h4>Scan Results</h4>
+          <p><strong>Host Status:</strong> {{ device.detailed_scan.status }}</p>
+          
+          <table *ngIf="device.detailed_scan.ports.length > 0">
+            <thead>
+              <tr>
+                <th>Port</th>
+                <th>Protocol</th>
+                <th>State</th>
+                <th>Service</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let port of device.detailed_scan.ports">
+                <td>{{ port.port }}</td>
+                <td>{{ port.protocol }}</td>
+                <td>{{ port.state }}</td>
+                <td>{{ port.service }}</td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <p *ngIf="device.detailed_scan.ports.length === 0">No open ports found</p>
+        </div>
+        
         <div class="actions">
-          <button class="btn btn-primary" (click)="pingDevice(device.ip)">Ping</button>
-          <button class="btn btn-accent" *ngIf="device.snmp_available" (click)="queryDevice(device.ip)">Query SNMP</button>
-          <button class="btn btn-success" (click)="saveDevice(device)" [disabled]="device.saved" *ngIf="!device.saved">Save</button>
-          <span *ngIf="device.saved" class="saved-label">Saved</span>
+          <button class="btn btn-success" 
+                  (click)="saveDevice(device)" 
+                  [disabled]="device.saved"
+                  *ngIf="device.detailed_scan">
+            {{ device.saved ? 'Saved' : 'Save to Inventory' }}
+          </button>
         </div>
       </div>
     </div>

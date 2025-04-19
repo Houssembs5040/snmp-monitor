@@ -2,6 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+interface Host {
+  ip: string;
+  name?: string;
+  network_id: number;
+  snmp_available?: boolean;
+  open_ports?: number[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,6 +50,10 @@ export class SnmpService {
     return this.http.post<any>(`${this.apiUrl}/snmp/set/${deviceId}`, { value, type });
   }
 
+  // Add this method if it doesn't exist
+  scanDevice(ip: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/scan_device`, { ip });
+  }
    // Network Methods
    getNetworks(): Observable<any> {
     return this.http.get(`${this.apiUrl}/networks`);
@@ -73,8 +85,14 @@ export class SnmpService {
     return this.http.get(`${this.apiUrl}/hosts`);
   }
 
-  addHost(host: { ip: string; name?: string; network_id: number; snmp_available: boolean; open_ports: number[] }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/hosts/add`, host);
+  addHost(host: Host): Observable<any> {
+    const payload = {
+      ...host,
+      snmp_available: host.snmp_available ?? false,
+      open_ports: host.open_ports ?? [],
+      name: host.name || `Host_${host.ip.replace(/\./g, '_')}`
+    };
+    return this.http.post(`${this.apiUrl}/hosts/add`, payload);
   }
 
   updateHost(id: number, host: { name: string }): Observable<any> {

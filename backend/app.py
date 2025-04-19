@@ -7,7 +7,7 @@ def create_app():
     CORS(app)
 
     # Configure SQLAlchemy
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/snmp_db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/snmp_db'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # Initialize SQLAlchemy
